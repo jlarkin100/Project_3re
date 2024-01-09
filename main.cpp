@@ -6,7 +6,7 @@ int main()
    DigitalIn gasDetector(D2);
    DigitalIn overTempDetector(D3);
    
-   DigitalOut alarmLed(LED1);
+   DigitalOut alarmLed(LED3);
    
    gasDetector.mode(PullDown);   
    overTempDetector.mode(PullDown);
