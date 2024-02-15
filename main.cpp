@@ -1,22 +1,28 @@
+//=====[Libraries]=============================================================
 #include "mbed.h"
 #include "arm_book_lib.h"
 
-int main()
-{
-   DigitalIn gasDetector(D2);
-   DigitalIn overTempDetector(D3);
-   
-   DigitalOut alarmLed(LED3);
-   
-   gasDetector.mode(PullDown);   
-   overTempDetector.mode(PullDown);
+#include "engine.h"
+#include "display.h"
+#include "wiper.h"
+#include "userInterface.h"
 
-   while (true) {
-      
-      if ( gasDetector || overTempDetector ) {
-         alarmLed = ON;
-      } else {
-         alarmLed = OFF;
-      }
-   }
+//=====[Main function, the program entry point after power on or reset]========
+
+int main()
+{   
+
+    engineInit();
+    userInterfaceDisplayInit();
+    while (true) {
+        engineUpdate();
+        
+        if(getEngineState()){
+            wiperUpdate();
+            userInterfaceDisplayUpdate();
+        }
+        delay(10);
+    }
 }
+
+
