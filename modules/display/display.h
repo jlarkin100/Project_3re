@@ -17,4 +17,4 @@ void displayStringWrite( const char * str );
 
 //=====[#include guards - end]=================================================
 
-#endif // _DISPLAY_H_
+#endif // _DISPLAY_H_x

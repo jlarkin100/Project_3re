@@ -28,23 +28,8 @@ void userInterfaceDisplayUpdate()
         DISPLAY_REFRESH_TIME_MS ) {
         accumulatedDisplayTime = 0;
 
-        displayCharPositionWrite ( 11, 1);
-        int delayType = getDelay();
-        if (delayType == 0) {
-            displayStringWrite( "SHORT  ");
-        }
-        else if(delayType == 1){
-            displayStringWrite( "MEDIUM" );
-        }
-        else if(delayType == 2){
-            displayStringWrite( "LONG  " );
-        }
-        else {
-            displayStringWrite( "NA     " );
-        }
-
         displayCharPositionWrite ( 7, 0);
-        int mode = getMode();
+        int mode = 1000;
         if (mode == 0) {
             displayStringWrite( "HI  " );
         }
@@ -52,7 +37,7 @@ void userInterfaceDisplayUpdate()
             displayStringWrite( "LO  " );
         }
         else if(mode == 2){
-            displayStringWrite( "INT " );
+            displayStringWrite( "INT  " );
         }
         else if(mode == 3){
             displayStringWrite( "OFF " );

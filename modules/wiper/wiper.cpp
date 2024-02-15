@@ -3,6 +3,7 @@
 
 #include "display.h"
 #include "wiper.h"
+#include <functional>
 
 #define TIME_INCREMENT_MS                       10
 #define DEBOUNCE_BUTTON_TIME_MS                 40
@@ -21,9 +22,9 @@ PwmOut wiper(PF_9);
 int selected_delaytime = 0;
 typedef enum {
     HI_MODE,
-    OFF_MODE,
     LO_MODE,
-    INT_MODE
+    INT_MODE,
+    OFF_MODE
 } wiperState_t;
 
 wiperState_t wiperState;
@@ -34,25 +35,21 @@ static void wiperModeLO();
 static void wiperModeINT();
 static void setMode();
 static void wiperloop(int MIN, int MAX);
-static void test();
+static void cycle();
 
-int stateNumber;
-
-
-
+int stateNumber = 0;
 
 int getMode(){
     return stateNumber;
 }
 
-static void test(){
-    wiper.period(PERIOD); // 20ms period
-    wiper.write(DUTY_MIN);
+static void cycle(float min, float max, float period, int delay){
+    wiper.period(period); // 20ms period
     
-    wiper.write(0.015);
-    delay(2000);
-    wiper.write(0.110);
-    delay(2000);
+    wiper.write(max);
+    delay(delay);
+    wiper.write(min);
+    delay(delay);
     
 }
 
@@ -64,28 +61,24 @@ static void wiperSweep(float DUTY, int delay){
 }
 
 void wiperUpdate() {
-    getDelay();
+    //getDelay();
     setMode();
     switch (wiperState) {
     case HI_MODE:
-        test();
-        wiperState = HI_MODE;
         stateNumber = 0;
         break;
     
     case LO_MODE:
-        test();
-        wiperState = LO_MODE;
+        
         stateNumber = 1;
         break;
 
     case INT_MODE:
-        test();
-        wiperState = INT_MODE;
+
         stateNumber = 2;
         break;
     case OFF_MODE:
-        wiperState = OFF_MODE;
+
         stateNumber = 3;
         break;
     default:
@@ -134,26 +127,3 @@ int getDelay(){
     return Delay_no;
 }
 
-static void wiperModeHI()
-{
-    wiperSweep(DUTY_MIN, 2000);
-    wiperSweep(DUTY_MAX, 2000);
-}
-
-static void wiperModeLO()
-{
-    wiperSweep(DUTY_MIN, 2000);
-    wiperSweep(DUTY_MAX, 2000);
-}
-
-static void wiperModeINT()
-{
-
-    wiperSweep(DUTY_MIN, 2000);
-    wiperSweep(DUTY_MAX, 2000);
-}
-
-static void wiperModeOFF()
-{
-    wiper.write(0);
-}
