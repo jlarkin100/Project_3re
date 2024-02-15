@@ -9,6 +9,8 @@
 #define SYSTEM_TIME_INCREMENT_MS        10
 
 
+
+
 void userInterfaceDisplayInit()
 {
     displayInit();
@@ -29,7 +31,8 @@ void userInterfaceDisplayUpdate()
         accumulatedDisplayTime = 0;
 
         displayCharPositionWrite ( 7, 0);
-        int mode = 1000;
+        int mode = getMode();
+    
         if (mode == 0) {
             displayStringWrite( "HI  " );
         }
@@ -45,9 +48,24 @@ void userInterfaceDisplayUpdate()
         else{
             displayStringWrite( "OFF " );
         }
-    
-
         
+    
+    int delayType = getDelay();
+    displayCharPositionWrite(10,1);
+       if (delayType == 0) {
+            displayStringWrite( "SHORT " );
+        }
+        else if(delayType == 1){
+            displayStringWrite( "MEDIUM" );
+        }
+        else if(delayType == 2){
+            displayStringWrite( "LONG  " );
+        }
+    
+        else{
+            displayStringWrite( "" );
+        }
+ 
     } 
     else {
         accumulatedDisplayTime =

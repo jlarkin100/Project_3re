@@ -18,8 +18,8 @@ int main()
     while (true) {
         engineUpdate();
         if(getEngineState()){
-            wiperUpdate();
             userInterfaceDisplayUpdate();
+            wiperUpdate();
         }
         delay(SYSTEM_TIME_INCREMENT_MS);
     }

@@ -6,10 +6,9 @@
 #include <functional>
 
 #define TIME_INCREMENT_MS                       10
-#define DEBOUNCE_BUTTON_TIME_MS                 40
-#define SHORT                                   10
-#define MEDIUM                                  50
-#define LONG                                    100
+#define SHORT                                   3000
+#define MEDIUM                                  6000
+#define LONG                                    8000
 #define DUTY_MIN 0.015
 #define DUTY_MAX 0.110
 #define PERIOD 0.02
@@ -36,8 +35,11 @@ static void wiperModeINT();
 static void setMode();
 static void wiperloop(int MIN, int MAX);
 static void cycle();
+static void setDelay();
+
 
 int stateNumber = 0;
+int Delay_no = 0;
 
 int getMode(){
     return stateNumber;
@@ -61,21 +63,25 @@ static void wiperSweep(float DUTY, int delay){
 }
 
 void wiperUpdate() {
-    //getDelay();
+    setDelay();
     setMode();
     switch (wiperState) {
     case HI_MODE:
         stateNumber = 0;
+        cycle(0.09, 0.125, 0.02, 250);
+    
         break;
     
     case LO_MODE:
         
         stateNumber = 1;
+        cycle(0.09, 0.125, 0.02, 2000);
         break;
 
     case INT_MODE:
 
         stateNumber = 2;
+        cycle(0.09, 0.125, 0.02, selected_delaytime);
         break;
     case OFF_MODE:
 
@@ -109,14 +115,16 @@ static void setMode(){//Issue with potentiometer voltage
     }
 }
 int getDelay(){
-    int Delay_no = 0;   //The number corresponding to the delay type: SHORT, MEDIUM, LONG
+    return Delay_no;    
+}
+static void setDelay(){
     float knob_reading = delaySelector.read();
 
-    if(knob_reading <= 3.33){
+    if(knob_reading <= 0.33){
         selected_delaytime = SHORT;
         Delay_no = 0;
     }
-    if(knob_reading > 3.33 && knob_reading <= 6.66){
+    else if(knob_reading > 0.33 && knob_reading <= 0.66){
         selected_delaytime = MEDIUM;
         Delay_no = 1;
     }
@@ -124,6 +132,4 @@ int getDelay(){
         selected_delaytime = LONG;
         Delay_no = 2;
     }
-    return Delay_no;
 }
-
