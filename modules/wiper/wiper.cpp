@@ -36,13 +36,13 @@ static void setMode();
 static void wiperloop(int MIN, int MAX);
 static void test();
 
+int stateNumber;
 
 
-//gets delay time based on intermittent delay time selector potentiometer 
 
 
 int getMode(){
-    return wiperState;
+    return stateNumber;
 }
 
 static void test(){
@@ -70,23 +70,29 @@ void wiperUpdate() {
     case HI_MODE:
         test();
         wiperState = HI_MODE;
+        stateNumber = 0;
         break;
     
     case LO_MODE:
         test();
         wiperState = LO_MODE;
+        stateNumber = 1;
         break;
 
     case INT_MODE:
         test();
         wiperState = INT_MODE;
+        stateNumber = 2;
         break;
     case OFF_MODE:
         wiperState = OFF_MODE;
+        stateNumber = 3;
         break;
     default:
         wiperState = OFF_MODE;
+        stateNumber = 3;
         break;
+
     }
     
 }
@@ -96,17 +102,17 @@ static void setMode(){//Issue with potentiometer voltage
     if(WiperModeValue <= 1.00 && WiperModeValue > 0.75) {
         wiperState = HI_MODE;
     }
-    if(WiperModeValue > 0.50 && WiperModeValue <= 0.75) {
+    else if(WiperModeValue > 0.50 && WiperModeValue <= 0.75) {
         wiperState = LO_MODE;
     }
-    if(WiperModeValue > 0.25 && WiperModeValue <= 0.50) {
+    else if(WiperModeValue > 0.25 && WiperModeValue <= 0.50) {
         wiperState = INT_MODE;
     }
-    if(WiperModeValue <= 0.25) {
+    else if(WiperModeValue <= 0.25) {
         wiperState = OFF_MODE;
     }
-    else {
-        wiperState = HI_MODE;
+    else  {
+        wiperState = OFF_MODE;
     }
 }
 int getDelay(){

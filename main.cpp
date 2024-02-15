@@ -7,6 +7,7 @@
 #include "wiper.h"
 #include "userInterface.h"
 
+#define SYSTEM_TIME_INCREMENT_MS        10
 //=====[Main function, the program entry point after power on or reset]========
 
 int main()
@@ -16,12 +17,11 @@ int main()
     userInterfaceDisplayInit();
     while (true) {
         engineUpdate();
-        
         if(getEngineState()){
             wiperUpdate();
             userInterfaceDisplayUpdate();
         }
-        delay(10);
+        delay(SYSTEM_TIME_INCREMENT_MS);
     }
 }
 
