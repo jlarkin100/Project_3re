@@ -26,8 +26,7 @@ void userInterfaceDisplayUpdate()
 {
     static int accumulatedDisplayTime = 0;
     
-    if( accumulatedDisplayTime >=
-        DISPLAY_REFRESH_TIME_MS ) {
+    if( true) {
         accumulatedDisplayTime = 0;
 
         displayCharPositionWrite ( 7, 0);
